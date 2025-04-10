@@ -1,3 +1,16 @@
+/**
+ * @file Main application script for Online Quiz App
+ * @module script
+ * @requires ./style.css
+ * @requires ./index.html
+ */
+
+/** 
+ * @constant {Array<Object>} quizData - Array of quiz questions and answers
+ * @property {string} question - The question text
+ * @property {Array<string>} options - Available answer options
+ * @property {string} correctAnswer - The correct answer
+ */
 const quizData = [
     {
         question: "What is the capital of France?",
@@ -96,11 +109,19 @@ const quizData = [
     }
 ];
 
-
+/** @type {number} Current question index */
 let currentQuestionIndex = 0;
+
+/** @type {number} User's total score */
 let score = 0;
+
+/** @type {number} Timer interval reference */
 let timer;
+
+
 let timeLeft = 300; // 5 minutes in seconds
+
+/** @type {Array<?string>} User's answers array (null represents unanswered) */
 const userAnswers = new Array(quizData.length).fill(null);
 
 // DOM elements
@@ -116,13 +137,18 @@ const prevButton = document.getElementById("prev-btn");
 const submitButton = document.getElementById("submit-btn");
 const reviewButton = document.getElementById("review-btn");
 
-// Start the Quiz
+// Event Listeners
 startButton.addEventListener("click", startQuiz);
 nextButton.addEventListener("click", nextQuestion);
 prevButton.addEventListener("click", prevQuestion);
 submitButton.addEventListener("click", submitQuiz);
 reviewButton.addEventListener("click", () => location.reload());
 
+
+/**
+ * Starts the quiz and initializes timer
+ * @listens startButton#click
+ */
 function startQuiz() {
     startScreen.style.display = "none";
     quizScreen.style.display = "block";
@@ -130,6 +156,10 @@ function startQuiz() {
     startTimer();
 }
 
+/**
+ * Displays current question and options
+ * @description Updates DOM with current question and handles option selection styling
+ */
 function displayQuestion() {
     const questionData = quizData[currentQuestionIndex];
     questionContainer.innerHTML = `
@@ -144,11 +174,23 @@ function displayQuestion() {
     submitButton.style.display = currentQuestionIndex === quizData.length - 1 ? "inline-block" : "none";
 }
 
+
+/**
+ * Handles answer selection
+ * @param {string} answer - Selected answer text
+ * @description Updates userAnswers array and refreshes question display
+ */
 function selectAnswer(answer) {
     userAnswers[currentQuestionIndex] = answer;
     displayQuestion();
 }
 
+
+/**
+ * Navigates to next question
+ * @description Validates answer selection before proceeding
+ * @listens nextButton#click
+ */
 function nextQuestion() {
     if (userAnswers[currentQuestionIndex] === null) {
         alert("Please select an answer before proceeding.");
@@ -158,11 +200,21 @@ function nextQuestion() {
     displayQuestion();
 }
 
+
+/**
+ * Navigates to previous question
+ * @listens prevButton#click
+ */
 function prevQuestion() {
     currentQuestionIndex--;
     displayQuestion();
 }
 
+
+/**
+ * Starts countdown timer
+ * @description Updates timer display every second and auto-submits when time expires
+ */
 function startTimer() {
     timer = setInterval(() => {
         timeLeft--;
@@ -177,6 +229,12 @@ function startTimer() {
     }, 1000);
 }
 
+
+/**
+ * Submits quiz for scoring
+ * @description Validates all questions answered, stops timer, and shows results
+ * @listens submitButton#click
+ */
 function submitQuiz() {
     if (userAnswers.includes(null)) {
         alert("Please answer all questions before submitting.");
@@ -189,6 +247,10 @@ function submitQuiz() {
     resultScreen.style.display = "block";
 }
 
+/**
+ * Calculates and displays final score
+ * @description Compares user answers with correct answers and updates score display
+ */
 function calculateScore() {
     score = userAnswers.filter((answer, index) => answer === quizData[index].correctAnswer).length;
     scoreElement.textContent = `${score} / ${quizData.length}`;

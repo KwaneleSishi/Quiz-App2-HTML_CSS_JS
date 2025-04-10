@@ -1,4 +1,4 @@
-# 🎲 National Lottery Simulator
+# Quiz-App
 
 
 **Name:** Kwanele  
@@ -43,7 +43,6 @@ The goal is to deliver a smooth, interactive, and responsive quiz experience usi
 ### AI Assistants using Vibe Coding
 - 🤖 ChatGPT – code structure, debugging, documentation
 
-- 🤖 Claude.ai – visual design tips and layout refinement
 
 ### Technologies
 - 🔹 HTML5 – Page structure and UI layout  
