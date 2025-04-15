@@ -161,7 +161,10 @@ function startQuiz() {
  * @description Updates DOM with current question and handles option selection styling
  */
 function displayQuestion() {
+     // Gets current question data
     const questionData = quizData[currentQuestionIndex];
+
+    // Creates HTML for question and options
     questionContainer.innerHTML = `
         <h3>${currentQuestionIndex + 1}. ${questionData.question}</h3>
         ${questionData.options.map((option, index) => `
@@ -169,6 +172,8 @@ function displayQuestion() {
                  onclick="selectAnswer('${option}')">${option}</div>
         `).join("")}
     `;
+    
+    // Controls button visibility
     prevButton.style.display = currentQuestionIndex > 0 ? "inline-block" : "none";
     nextButton.style.display = currentQuestionIndex < quizData.length - 1 ? "inline-block" : "none";
     submitButton.style.display = currentQuestionIndex === quizData.length - 1 ? "inline-block" : "none";
